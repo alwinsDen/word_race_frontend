@@ -8,27 +8,36 @@ function App() {
     const [wordStack, setWordStack] = useState<string[]>([])
     const [currentWord, setCurrentWord] = useState<string>("")
     const [solvedWords, setSolvedWords] = useState<number>(0)
+    const [multiplier, setMultiplier] = useState<number>(0)
     const [level, setLevel] = useState<number>(0)
-
+    const [levelClearWords, setLevelClearWords] = useState<number>(10)
+    const [timeLoss, setTimeLoss] = useState<number>(1000)
+    const [scoreBoard, setScoreBoard] = useState<number>(0)
+    const [increaseDescre, setIncreDecre] = useState<string | null>(null)
+    const [gameOver, setGameOver] = useState<boolean>(false)
     // Mousetrap.bind("space",()=> {console.log("I pressed space")})
 
     useEffect(() => {
         let wordArray = wordList[0].match(/\b(\w+\W+)/g)
-        let timeLoss = 0;
         let wordIndex = 0;
-        if (level === 0) {
-            timeLoss = 1000;
-            const intervalVar = setInterval(() => {
+        const intervalVar = setInterval(() => {
+            if (!gameOver) {
                 setWordStack(state => [...state, wordArray![wordIndex]]);
                 wordIndex += 1;
-            }, timeLoss)
-            return () => clearInterval(intervalVar)
-        }
-    }, [])
+                if (wordStack.length===15) setGameOver(true)
+            }
+        }, timeLoss)
+        return () => clearInterval(intervalVar)
+    }, [timeLoss])
 
     useEffect(() => {
         if (solvedWords) {
             setWordStack(state => state.filter((_, i) => i !== 0))
+            if (solvedWords === levelClearWords) {
+                setLevelClearWords(state => state + 5);
+                setTimeLoss(state => state - 100)
+                setLevel(state => state + 1)
+            }
         }
     }, [solvedWords])
 
@@ -40,13 +49,15 @@ function App() {
                      display: "flex"
                  }}
             >
-                <div className={"level"}>LEVEL 0</div>
+                <div className={"level"}>LEVEL {level}</div>
                 &nbsp; &nbsp;
-                <div className={"score"}>420 Score</div>
+                <div className={"score"}>{scoreBoard} Score &nbsp; &nbsp; {increaseDescre ? increaseDescre : null}</div>
                 &nbsp; &nbsp;
-                <div className={"multiplier"}>1X</div>
+                <div className={"multiplier"}>{multiplier}X</div>
                 &nbsp; &nbsp;
-                <div className={"wordsLeft"}>15 words</div>
+                <div className={"wordsLeft"}>stack size: {wordStack.length} / 15</div>
+                &nbsp; &nbsp;
+                <div className={"wordssolved"}>{solvedWords} Solved</div>
             </div>
 
             <div className={"displayDiv"} style={{
@@ -56,7 +67,7 @@ function App() {
             }
             }>
                 {
-                    wordStack.map((item, index) => {
+                    wordStack.length < 15 ? wordStack.map((item, index) => {
                         return <div key={item + index}
                                     style={
                                         index === 0 ? {
@@ -66,7 +77,9 @@ function App() {
                         >
                             <p>{item}</p>
                         </div>
-                    })
+                    }) : <h2 style={{
+                        color: "red",
+                    }}>GAME OVER THE STACK IS FULL</h2>
                 }
             </div>
 
@@ -82,8 +95,15 @@ function App() {
                         for (let i = 0; i < e.target.value.length; i++) {
                             if (e.target.value[i] !== wordStack[0][i]) {
                                 e.target.value = "";
+                                setScoreBoard(state => state - 10)
+                                setIncreDecre("-" + 10)
+                                setMultiplier(state => 0)
                             } else if (e.target.value === wordStack[0]) {
+
+                                setScoreBoard(state => state + (Math.round((1 / wordStack.length) * 100) + multiplier * 10))
+                                setIncreDecre("+" + (Math.round((1 / wordStack.length) * 100) + multiplier * 10))
                                 setSolvedWords(state => state + 1)
+                                setMultiplier(state => state + 1)
                                 e.target.value = "";
                             }
                         }
