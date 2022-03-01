@@ -126,7 +126,6 @@ const MainPage = () => {
                 defaultValue={""}
                 id={"inputref"}
                 onChange={(e) => {
-                    console.log("Here")
                     for (let i = 0; i < e.target.value.length; i++) {
                         if (e.target.value[i] !== wordStack[0][i]) {
                             onMisMatch(e)
