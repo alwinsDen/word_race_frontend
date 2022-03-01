@@ -95,6 +95,10 @@ const MainPage = () => {
 
         <div className={styles.stackDiv}>
             <div className={styles.stackCount}>
+                <p>{levelClearWords} total words required for next level</p>
+                &nbsp;
+                &nbsp;
+                &nbsp;
                 <p className={styles.stackTitle}>STACK SIZE: </p>
                 &nbsp;
                 <p className={styles.stackValue}>{wordStack.length} / 15</p>
