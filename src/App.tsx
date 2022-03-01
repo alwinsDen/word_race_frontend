@@ -16,25 +16,26 @@ function App() {
     const [increaseDescre, setIncreDecre] = useState<string | null>(null)
     const [gameOver, setGameOver] = useState<boolean>(false)
     // Mousetrap.bind("space",()=> {console.log("I pressed space")})
+    const [wordIndex, setWordIndex] = useState<number>(0)
 
+    let wordArray = wordList[0].match(/\b(\w+\W+)/g)
     useEffect(() => {
-        let wordArray = wordList[0].match(/\b(\w+\W+)/g)
-        let wordIndex = 0;
+        let wordIndexProxy = wordIndex
+        // console.log(wordIndex)
         const intervalVar = setInterval(() => {
-            if (!gameOver) {
-                setWordStack(state => [...state, wordArray![wordIndex]]);
-                wordIndex += 1;
-                if (wordStack.length===15) setGameOver(true)
-            }
+            setWordStack(state => [...state, wordArray![wordIndexProxy]]);
+            setWordIndex(state=>state+1)
+            wordIndexProxy += 1
         }, timeLoss)
         return () => clearInterval(intervalVar)
-    }, [timeLoss])
+    }, [timeLoss, wordIndex, gameOver])
 
     useEffect(() => {
+        console.log(levelClearWords)
         if (solvedWords) {
             setWordStack(state => state.filter((_, i) => i !== 0))
             if (solvedWords === levelClearWords) {
-                setLevelClearWords(state => state + 5);
+                setLevelClearWords(state => state + 5 + solvedWords);
                 setTimeLoss(state => state - 100)
                 setLevel(state => state + 1)
             }
