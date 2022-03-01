@@ -1,0 +1,98 @@
+.mainPage {
+  width: 100vw;
+  height: 100vh;
+  //word display
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  .stackDiv {
+    width: max-content;
+    //margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    .stackCount {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      .stackTitle {
+        font-size: 1.4rem;
+      }
+
+      .stackValue {
+        font-size: 1.4rem;
+        background: #E7E7E7;
+        border-radius: 1px;
+        padding: .3rem 4rem;
+      }
+    }
+
+    .stackDisplay {
+      //margin-top: .4rem;
+      width: 55rem;
+      min-height: 10rem;
+      max-height: max-content;
+      background: #FCFCFC;
+      border: 1px solid #CFAFAF;
+      box-sizing: border-box;
+      border-radius: .4rem;
+      display: flex;
+      flex-wrap: wrap;
+      //gap: .6rem;
+      padding: .4rem;
+
+      .firstWord {
+        font-size: 1.4rem;
+        background: #D1EFFC;
+        border: .5px solid #000000;
+        box-sizing: border-box;
+        border-radius: .4rem;
+        height: min-content;
+        padding: .4rem;
+        font-weight: 800;
+      }
+
+      .normalWord {
+        font-size: 1.4rem;
+        border: .5px solid rgba(0, 0, 0, 0);
+        box-sizing: border-box;
+        border-radius: .4rem;
+        height: min-content;
+        padding: .4rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+
+  //input bar div
+  .inputBarDiv {
+    width: 30rem;
+    display: flex;
+    flex-direction: column;
+    //margin-top: 2rem;
+
+    .inputState {
+      display: flex;
+      justify-content: flex-start;
+      font-size: .9rem;
+      font-style: italic;
+      color: red;
+      padding-left: .4rem;
+      font-weight: 800;
+    }
+
+    .inputBar {
+      font-size: 1.4rem;
+      padding: 1rem .6rem;
+      background: #F3EDED;
+      border: 3px solid rgb(255, 255, 255);
+      box-sizing: border-box;
+      border-radius: 6px;
+      outline: none;
+    }
+  }
+}
