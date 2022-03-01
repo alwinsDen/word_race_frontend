@@ -2,10 +2,17 @@
   width: 100vw;
   height: 100vh;
   //word display
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
   .stackDiv {
     width: max-content;
-    margin-top: 4rem;
-
+    //margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
     .stackCount {
       display: flex;
       justify-content: flex-end;
@@ -24,7 +31,7 @@
     }
 
     .stackDisplay {
-      margin-top: .4rem;
+      //margin-top: .4rem;
       width: 55rem;
       min-height: 10rem;
       max-height: max-content;
@@ -66,7 +73,7 @@
     width: 30rem;
     display: flex;
     flex-direction: column;
-    margin-top: 2rem;
+    //margin-top: 2rem;
 
     .inputState {
       display: flex;
@@ -82,7 +89,7 @@
       font-size: 1.4rem;
       padding: 1rem .6rem;
       background: #F3EDED;
-      border: 1px solid #E90808;
+      border: 3px solid rgb(255, 255, 255);
       box-sizing: border-box;
       border-radius: 6px;
       outline: none;

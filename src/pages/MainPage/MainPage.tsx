@@ -1,14 +1,17 @@
 import React, {useEffect, useState} from "react"
 import styles from "./MainPage.module.scss"
+
+//components
 import KeyboardComponent from "../../components/KeyboardComponent/KeyboardComponent";
 import ScoreTiles from "../../components/ScoreTiles/ScoreTiles";
 import {wordList} from "../../globals/wordLists/wordList";
-
-const testData = ['here', "is", "the", "tex", "for", "test"]
+import ResultPopUp from "../../components/ResultPopUp/ResultPopUp";
 
 const MainPage = () => {
+    let wordArray = wordList[2].match(/\b(\w+\W+)/g)
 
-    let wordArray = wordList[0].match(/\b(\w+\W+)/g)
+    //result pop up control
+    const [showResult, setShowResult] = useState<boolean>(false)
 
     //states
     const [wordStack, setWordStack] = useState<string[]>([])
@@ -29,9 +32,10 @@ const MainPage = () => {
 
     const [multiplier, setMultiplier] = useState<number>(0)
 
+    const [wordCorrectState, setWordCorrectState] = useState<boolean | null>(null)
+
     useEffect(() => {
         document.getElementById("inputref")!.focus()
-
 
 
         let wordIndexProxy = wordIndex
@@ -43,6 +47,7 @@ const MainPage = () => {
 
         if (wordStack.length > 14) {
             clearInterval(intervalFunc)
+            setShowResult(true)
         }
 
         return () => clearInterval(intervalFunc)
@@ -60,7 +65,23 @@ const MainPage = () => {
     }, [solvedWords])
     //useState
 
+    //functions
+    const onMisMatch = (e: any) => {
+        e.target.value = "";
+        setScoreBoard(state => state - 10)
+        setIncreDecre("-" + 10)
+        setMultiplier(state => 0)
+        setWordCorrectState(false)
+        e.target.style.border = "2px solid red"
+        document.getElementById("alertBar")!.style.color = "red"
+    }
+
+
     return <div className={styles.mainPage}>
+
+        {showResult ? <ResultPopUp
+            scoreBoard={scoreBoard}
+        /> : null}
 
         <ScoreTiles
             scoreBoard={scoreBoard}
@@ -90,7 +111,9 @@ const MainPage = () => {
 
         {/*    input bar*/}
         <div className={styles.inputBarDiv}>
-            <p className={styles.inputState}>WRONG INPUT</p>
+            <p className={styles.inputState}
+               id={"alertBar"}
+            >{wordCorrectState !== null ? (wordCorrectState ? "Correct input!!" : "Wrong input!!!") : ""}</p>
             <input
                 placeholder={"Start typing here"}
                 className={styles.inputBar}
@@ -100,16 +123,16 @@ const MainPage = () => {
                     console.log("Here")
                     for (let i = 0; i < e.target.value.length; i++) {
                         if (e.target.value[i] !== wordStack[0][i]) {
-                            e.target.value = "";
-                            setScoreBoard(state => state - 10)
-                            setIncreDecre("-" + 10)
-                            setMultiplier(state => 0)
+                            onMisMatch(e)
                         } else if (e.target.value === wordStack[0]) {
                             setScoreBoard(state => state + (Math.round((1 / wordStack.length) * 100) + multiplier * 10))
                             setIncreDecre("+" + (Math.round((1 / wordStack.length) * 100) + multiplier * 10))
                             setSolvedWords(state => state + 1)
                             setMultiplier(state => state + 1)
                             e.target.value = "";
+                            setWordCorrectState(true)
+                            e.target.style.border = "2px solid darkgreen"
+                            document.getElementById("alertBar")!.style.color = "darkgreen"
                         }
                     }
                 }}
