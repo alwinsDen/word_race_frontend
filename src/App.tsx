@@ -6,7 +6,6 @@ const App=()=> {
     return <BrowserRouter>
         <Routes/>
         <ToastContainer/>
-        <p>Here is the test</p>
     </BrowserRouter>
 }
 

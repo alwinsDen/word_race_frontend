@@ -121,6 +121,7 @@
     display: flex;
     flex-direction: column;
     margin-top: 2rem;
+
     .inputState {
       display: flex;
       justify-content: flex-start;
@@ -139,6 +140,42 @@
       box-sizing: border-box;
       border-radius: 6px;
       outline: none;
+    }
+  }
+
+
+  .visualKeyboard {
+    display: flex;
+    height: max-content;
+
+    .keyboadkey {
+      height: 4rem;
+      width: 4rem;
+      background: #E8E8E8;
+      border: 1px solid #000000;
+      box-sizing: border-box;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 1rem;
+    }
+
+    .keyboadkeyUnselected {
+      height: 4rem;
+      width: 4rem;
+      background: #E8E8E8;
+      border: 1px solid  #D5D5D5;
+      box-sizing: border-box;
+      //box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 1rem;
     }
   }
 }
