@@ -81,6 +81,8 @@ const MainPage = () => {
 
         {showResult ? <ResultPopUp
             scoreBoard={scoreBoard}
+            solvedWords={solvedWords}
+            level={level}
         /> : null}
 
         <ScoreTiles
