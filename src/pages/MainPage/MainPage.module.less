@@ -1,0 +1,112 @@
+.mainPage {
+  width: 100vw;
+  height: 100vh;
+  .scoretiles {
+    display: flex;
+    flex-wrap: wrap;
+    height: max-content;
+    gap: 2rem;
+    .tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+      background: #9BC877;
+      border-radius: .5rem;
+      width: 12rem;
+      height: 5rem;
+      .tileHeader {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 1.4rem;
+        /* identical to box height */
+        text-align: center;
+        color: #FFFFFF;
+      }
+      .incrementMeter {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        .mainIncr {
+          font-style: normal;
+          font-weight: bold;
+          font-size: 1.4rem;
+          /* identical to box height */
+          text-align: center;
+          color: #FFFFFF;
+        }
+          .increment {
+            font-style: normal;
+            font-weight: bold;
+            font-size: .9rem;
+            text-align: center;
+            color: #000000;
+            background: #F3E8E8;
+            padding: .2rem .4rem;
+            border-radius: .3rem;
+          }
+      }
+    }
+  }
+
+
+  //word display
+  .stackDiv {
+    width: max-content;
+    margin-top: 4rem;
+    .stackCount {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      .stackTitle {
+        font-size: 1.4rem;
+      }
+      .stackValue {
+        font-size: 1.4rem;
+        background: #E7E7E7;
+        border-radius: 1px;
+        padding: .3rem 4rem;
+      }
+    }
+    .stackDisplay {
+      margin-top: .4rem;
+      width: 55rem;
+      height: 10rem;
+      background: #FCFCFC;
+      border: 1px solid #CFAFAF;
+      box-sizing: border-box;
+      border-radius: .4rem;
+      display: flex;
+      flex-wrap: wrap;
+      //gap: .6rem;
+      padding: .4rem;
+
+      .firstWord {
+        font-size: 1.4rem;
+        background: #D1EFFC;
+        border: .5px solid #000000;
+        box-sizing: border-box;
+        border-radius: .4rem;
+        height: min-content;
+        padding: .4rem;
+        font-weight: 800;
+      }
+
+      .normalWord {
+        font-size: 1.4rem;
+        border: .5px solid rgba(0, 0, 0, 0);
+        box-sizing: border-box;
+        border-radius: .4rem;
+        height: min-content;
+        padding: .4rem;
+        font-weight: 600;
+      }
+    }
+  }
+
+
+  //input bar div
+  .inputBarDiv {
+
+  }
+}
