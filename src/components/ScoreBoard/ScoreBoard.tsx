@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
+import ReactLoading from "react-loading"
 import styles from "./ScoreBoard.module.scss"
 import axios from "axios";
 
@@ -43,7 +43,7 @@ const ScoreBoard=(props:any)=> {
                 </TableHead>
                 <TableBody>
                     {
-                        tableData && (tableData.map((item : any, index)=> {
+                        tableData ? (tableData.map((item : any, index)=> {
                             return <TableRow
                                 key={item+index}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -55,8 +55,9 @@ const ScoreBoard=(props:any)=> {
                                 <TableCell align="center">{item.gamesPlayed}</TableCell>
                                 <TableCell align="center">{item.solvedWords}</TableCell>
                             </TableRow>
-                        }))
+                        })) : <ReactLoading type={"spin"} color={"#000000"} height={"100px"} width={"100px"}/>
                     }
+
                 </TableBody>
             </Table>
         </TableContainer>

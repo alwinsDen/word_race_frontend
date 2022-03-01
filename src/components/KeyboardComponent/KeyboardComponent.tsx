@@ -31,7 +31,7 @@ const KeyboardComponent = () => {
             {/*    button section goes here*/}
             {
                 alphabetsList.firstLevel.map((item, index) => {
-                    return <div className={currentKey === item ? styles.keyboadkey : styles.keyboadkeyUnselected}>
+                    return <div key={item+index} className={currentKey === item ? styles.keyboadkey : styles.keyboadkeyUnselected}>
                         <p>{item.toUpperCase()}</p>
                     </div>
                 })
@@ -40,7 +40,7 @@ const KeyboardComponent = () => {
         <div className={styles.visualKeyboard}>
             {
                 alphabetsList.secondLevel.map((item, index) => {
-                    return <div className={currentKey === item ? styles.keyboadkey : styles.keyboadkeyUnselected}>
+                    return <div key={item+index} className={currentKey === item ? styles.keyboadkey : styles.keyboadkeyUnselected}>
                         <p>{item.toUpperCase()}</p>
                     </div>
                 })
@@ -49,7 +49,7 @@ const KeyboardComponent = () => {
         <div className={styles.visualKeyboard}>
             {
                 alphabetsList.thirdLevel.map((item, index) => {
-                    return <div className={currentKey === item ? styles.keyboadkey : styles.keyboadkeyUnselected}>
+                    return <div key={item+index} className={currentKey === item ? styles.keyboadkey : styles.keyboadkeyUnselected}>
                         <p>{item.toUpperCase()}</p>
                     </div>
                 })

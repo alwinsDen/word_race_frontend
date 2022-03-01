@@ -95,6 +95,10 @@ const MainPage = () => {
 
         <div className={styles.stackDiv}>
             <div className={styles.stackCount}>
+                <p>{levelClearWords} total words required for next level</p>
+                &nbsp;
+                &nbsp;
+                &nbsp;
                 <p className={styles.stackTitle}>STACK SIZE: </p>
                 &nbsp;
                 <p className={styles.stackValue}>{wordStack.length} / 15</p>
@@ -122,7 +126,6 @@ const MainPage = () => {
                 defaultValue={""}
                 id={"inputref"}
                 onChange={(e) => {
-                    console.log("Here")
                     for (let i = 0; i < e.target.value.length; i++) {
                         if (e.target.value[i] !== wordStack[0][i]) {
                             onMisMatch(e)
