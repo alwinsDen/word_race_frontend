@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import './App.less';
+import './App.scss';
 import {wordList} from "./globals/wordLists/wordList";
 // import MouseTrap from "mousetrap"
 // import * as Mousetrap from "mousetrap";

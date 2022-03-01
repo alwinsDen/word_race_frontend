@@ -1,5 +1,5 @@
 import React from "react"
-import styles from "./MainPage.module.less"
+import styles from "./MainPage.module.scss"
 
 const testData = ['here', "is", "the", "tex", "for", "test"]
 
