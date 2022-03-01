@@ -1,103 +1,85 @@
-import React,{useEffect, useCallback, useState} from "react"
+import React, {useEffect, useState} from "react"
 import styles from "./MainPage.module.scss"
+import KeyboardComponent from "../../components/KeyboardComponent/KeyboardComponent";
+import ScoreTiles from "../../components/ScoreTiles/ScoreTiles";
+import {wordList} from "../../globals/wordLists/wordList";
 
 const testData = ['here', "is", "the", "tex", "for", "test"]
-const alphabetsList = {
-    firstLevel: ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
-    secondLevel: ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
-    thirdLevel: ["z", "x", "c", "v", "b", "n", "m"]
-}
-
-
-
-
 
 const MainPage = () => {
-    const keyFunction=useCallback((event)=> {
-        setCurrentKey(event.key.toLowerCase())
-    },[])
 
-    const keyFunctionUp=useCallback((event)=> {
-        setCurrentKey(null)
-    },[])
+    let wordArray = wordList[0].match(/\b(\w+\W+)/g)
 
-    useEffect(()=>{
-        document.addEventListener("keydown", keyFunction, false);
-        document.addEventListener("keyup", keyFunctionUp, false);
+    //states
+    const [wordStack, setWordStack] = useState<string[]>([])
 
-        return () => {
-            document.removeEventListener("keydown", keyFunction, false);
-            document.addEventListener("keyup", keyFunctionUp, false);
-        };
-    },[])
+    const [wordIndex, setWordIndex] = useState<number>(0)
 
+    const [timeLoss, setTimeLoss] = useState<number>(1000)
+
+    const [solvedWords, setSolvedWords] = useState<number>(0)
+
+    const [levelClearWords, setLevelClearWords] = useState<number>(10)
+
+    const [level, setLevel] = useState<number>(0)
+
+    const [scoreBoard, setScoreBoard] = useState<number>(0)
+
+    const [increaseDescre, setIncreDecre] = useState<string | null>(null)
+
+    const [multiplier, setMultiplier] = useState<number>(0)
+
+    useEffect(() => {
+        document.getElementById("inputref")!.focus()
+
+
+
+        let wordIndexProxy = wordIndex
+        const intervalFunc = setInterval(() => {
+            setWordStack(state => [...state, wordArray![wordIndexProxy]]);
+            setWordIndex(state => state + 1)
+            wordIndexProxy += 1
+        }, timeLoss)
+
+        if (wordStack.length > 14) {
+            clearInterval(intervalFunc)
+        }
+
+        return () => clearInterval(intervalFunc)
+    }, [timeLoss, wordIndex])
+
+    useEffect(() => {
+        if (solvedWords) {
+            setWordStack(state => state.filter((_, i) => i !== 0))
+            if (solvedWords === levelClearWords) {
+                setLevelClearWords(state => state + 5 + solvedWords);
+                setTimeLoss(state => state - 100)
+                setLevel(state => state + 1)
+            }
+        }
+    }, [solvedWords])
     //useState
-    const [currentKey, setCurrentKey] = useState<string | null>(null)
 
     return <div className={styles.mainPage}>
-        <div className={styles.scoretiles}>
 
-            {/*TODO: Here are the tiles*/}
-            {/*SCORE TILE IS HERE*/}
-            <div className={styles.tile}>
-                <p className={styles.tileHeader}>SCORE</p>
-                <div className={styles.incrementMeter}>
-                    <p className={styles.mainIncr}>324</p>
-                    <p className={styles.increment}>
-                        +50
-                    </p>
-                </div>
-            </div>
-
-            {/*    Here is the level */}
-            <div className={styles.tile}
-                 style={{
-                     background: "#C8A777"
-                 }}
-            >
-                <p className={styles.tileHeader}>LEVEL</p>
-                <div className={styles.incrementMeter}>
-                    <p className={styles.mainIncr}>324</p>
-                </div>
-            </div>
-
-            {/*Multiplier*/}
-            <div className={styles.tile}
-                 style={{
-                     background: "#77C8B9"
-                 }}
-            >
-                <p className={styles.tileHeader}>MULTIPLIER</p>
-                <div className={styles.incrementMeter}>
-                    <p className={styles.mainIncr}>324X</p>
-                </div>
-            </div>
-
-            {/*Total words*/}
-            <div className={styles.tile}
-                 style={{
-                     background: "#D075A1"
-                 }}
-            >
-                <p className={styles.tileHeader}>TOTAL WORDS</p>
-                <div className={styles.incrementMeter}>
-                    <p className={styles.mainIncr}>324</p>
-                </div>
-            </div>
-        </div>
-
-        {/*    TODO:Here is the text display*/}
+        <ScoreTiles
+            scoreBoard={scoreBoard}
+            increaseDescre={increaseDescre}
+            level={level}
+            multiplier={multiplier}
+            solvedWords={solvedWords}
+        />
 
         <div className={styles.stackDiv}>
             <div className={styles.stackCount}>
                 <p className={styles.stackTitle}>STACK SIZE: </p>
                 &nbsp;
-                <p className={styles.stackValue}>15 / 15</p>
+                <p className={styles.stackValue}>{wordStack.length} / 15</p>
             </div>
             <div className={styles.stackDisplay}>
                 {
-                    testData.map((item, index) => {
-                        return <p className={index === 0 ? styles.firstWord : styles.normalWord}>
+                    wordStack.map((item, index) => {
+                        return <p key={item + index} className={index === 0 ? styles.firstWord : styles.normalWord}>
                             {item}
                         </p>
                     })
@@ -112,39 +94,30 @@ const MainPage = () => {
             <input
                 placeholder={"Start typing here"}
                 className={styles.inputBar}
-                defaultValue={"Random"}
+                defaultValue={""}
+                id={"inputref"}
+                onChange={(e) => {
+                    console.log("Here")
+                    for (let i = 0; i < e.target.value.length; i++) {
+                        if (e.target.value[i] !== wordStack[0][i]) {
+                            e.target.value = "";
+                            setScoreBoard(state => state - 10)
+                            setIncreDecre("-" + 10)
+                            setMultiplier(state => 0)
+                        } else if (e.target.value === wordStack[0]) {
+                            setScoreBoard(state => state + (Math.round((1 / wordStack.length) * 100) + multiplier * 10))
+                            setIncreDecre("+" + (Math.round((1 / wordStack.length) * 100) + multiplier * 10))
+                            setSolvedWords(state => state + 1)
+                            setMultiplier(state => state + 1)
+                            e.target.value = "";
+                        }
+                    }
+                }}
             />
         </div>
 
         {/*    key section*/}
-        <div className={styles.visualKeyboard}>
-            {/*    button section goes here*/}
-            {
-                alphabetsList.firstLevel.map((item, index)=> {
-                    return <div className={currentKey===item ? styles.keyboadkey : styles.keyboadkeyUnselected} >
-                        <p>{item.toUpperCase()}</p>
-                    </div>
-                })
-            }
-        </div>
-        <div className={styles.visualKeyboard}>
-            {
-                alphabetsList.secondLevel.map((item, index)=> {
-                    return <div className={currentKey===item ? styles.keyboadkey : styles.keyboadkeyUnselected}>
-                        <p>{item.toUpperCase()}</p>
-                    </div>
-                })
-            }
-        </div>
-        <div className={styles.visualKeyboard}>
-            {
-                alphabetsList.thirdLevel.map((item, index) => {
-                    return <div className={currentKey===item ? styles.keyboadkey : styles.keyboadkeyUnselected}>
-                        <p>{item.toUpperCase()}</p>
-                    </div>
-                })
-            }
-        </div>
+        <KeyboardComponent/>
 
 
     </div>

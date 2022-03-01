@@ -1,0 +1,52 @@
+.scoretiles {
+  display: flex;
+  flex-wrap: wrap;
+  height: max-content;
+  gap: 2rem;
+
+  .tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background: #9BC877;
+    border-radius: .5rem;
+    width: 12rem;
+    height: 5rem;
+
+    .tileHeader {
+      font-style: normal;
+      font-weight: bold;
+      font-size: 1.4rem;
+      /* identical to box height */
+      text-align: center;
+      color: #FFFFFF;
+    }
+
+    .incrementMeter {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+
+      .mainIncr {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 1.4rem;
+        /* identical to box height */
+        text-align: center;
+        color: #FFFFFF;
+      }
+
+      .increment {
+        font-style: normal;
+        font-weight: bold;
+        font-size: .9rem;
+        text-align: center;
+        color: #000000;
+        background: #F3E8E8;
+        padding: .2rem .4rem;
+        border-radius: .3rem;
+      }
+    }
+  }
+}
