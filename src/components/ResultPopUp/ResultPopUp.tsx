@@ -30,16 +30,25 @@ const ResultPopUp = (props: IProps) => {
                 toast.success("The score has been updated")
             })
         } else {
-            let playerName = await window.prompt("Enter a username")
-            axios.post("/user/save", {
-                score: scoreBoard,
-                level: level,
-                solvedWords: solvedWords,
-                playerName: playerName
-            }).then(res => {
-                toast.success("The new player record has been saved")
-                localStorage.setItem("wordraceID", res.data._id)
-            })
+
+            const createNewUser = async () => {
+                let playerName = await window.prompt("Enter a username")
+                if (playerName) {
+                    axios.post("/user/save", {
+                        score: scoreBoard,
+                        level: level,
+                        solvedWords: solvedWords,
+                        playerName: playerName
+                    }).then(res => {
+                        toast.success("The new player record has been saved")
+                        localStorage.setItem("wordraceID", res.data._id)
+                    })
+                } else {
+                    await createNewUser()
+                }
+            }
+
+            await createNewUser()
         }
     }
 
@@ -60,7 +69,7 @@ const ResultPopUp = (props: IProps) => {
                     SAVE
                 </button>
                 <button className={styles.scoreboard}
-                onClick={()=> setToggleScoreboard(true)}
+                        onClick={() => setToggleScoreboard(true)}
                 >
                     SCOREBOARD
                 </button>
