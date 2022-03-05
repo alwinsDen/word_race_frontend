@@ -7,6 +7,9 @@ import ScoreTiles from "../../components/ScoreTiles/ScoreTiles";
 import {wordList} from "../../globals/wordLists/wordList";
 import ResultPopUp from "../../components/ResultPopUp/ResultPopUp";
 
+//assets
+const gameOverAudio = require("../../assets/sounds/gameOverAudio.mp3")
+
 const MainPage = () => {
     let wordArray = wordList[2].match(/\b(\w+\W+)/g)
 
@@ -34,9 +37,13 @@ const MainPage = () => {
 
     const [wordCorrectState, setWordCorrectState] = useState<boolean | null>(null)
 
+    //defining audio
+    const audioFile = new Audio(gameOverAudio)
+
     useEffect(() => {
         document.getElementById("inputref")!.focus()
 
+        const onPlay =  () => audioFile.play()
 
         let wordIndexProxy = wordIndex
         const intervalFunc = setInterval(() => {
@@ -48,9 +55,16 @@ const MainPage = () => {
         if (wordStack.length > 14) {
             clearInterval(intervalFunc)
             setShowResult(true)
+            audioFile.addEventListener("canplaythrough",onPlay)
         }
 
-        return () => clearInterval(intervalFunc)
+        return () => {
+            clearInterval(intervalFunc)
+            if (audioFile) {
+                audioFile.pause();
+                audioFile.removeEventListener("canplaythrough",onPlay)
+            }
+        }
     }, [timeLoss, wordIndex])
 
     useEffect(() => {
